@@ -15,18 +15,14 @@ let isInitialized = false;
 
 async function initializeSheets() {
     try {
-        const auth = new google.auth.JWT(
-            SERVICE_ACCOUNT_EMAIL,
-            null,
-            SERVICE_ACCOUNT_KEY.private_key,
-            ['https://www.googleapis.com/auth/spreadsheets']
-        );
+        const auth = new google.auth.GoogleAuth({
+            keyFile: './service-account-key.json',
+            scopes: ['https://www.googleapis.com/auth/spreadsheets']
+        });
+        const client = await auth.getClient();
         
-        // Test authentication
-        await auth.authorize();
         console.log('Successfully authenticated with Google Sheets API');
-        
-        sheets = google.sheets({ version: 'v4', auth });
+        sheets = google.sheets({ version: 'v4', auth: client });
         isInitialized = true;
     } catch (err) {
         console.error('Error initializing Google Sheets API:', err);
@@ -59,11 +55,16 @@ async function appendToSheet(formData) {
             resource: {
                 values: [[
                     formData.idNumber,
+                    formData.isMissing ? 'נעדר' : '',
                     formData.name,
                     formData.street,
                     formData.houseNumber,
                     formData.apartmentNumber,
                     formData.floor,
+                    formData.residents,
+                    formData.familyMissing ? 'כן' : 'לא',
+                    formData.clothing || '',
+                    formData.additionalFamily || '',
                     formData.mobilePhone,
                     formData.emergencyPhone,
                     formData.homePhone,
@@ -127,7 +128,21 @@ async function getRecordById(idNumber) {
     }
 }
 
-module.exports = {
-    appendToSheet,
-    getRecordById
-};
+async function testReadSheet() {
+    await ensureInitialized();
+    try {
+        const response = await sheets.spreadsheets.values.get({
+            spreadsheetId: SPREADSHEET_ID,
+            range: `${SHEET_NAME}!A:K`
+        });
+        
+        console.log('Successfully read sheet data:');
+        console.log('First 5 rows:', response.data.values.slice(0, 5));
+        return response.data.values;
+    } catch (error) {
+        console.error('Error reading sheet:', error);
+        throw error;
+    }
+}
+
+module.exports = { appendToSheet, getRecordById, testReadSheet };

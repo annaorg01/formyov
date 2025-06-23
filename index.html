@@ -202,7 +202,13 @@
             <form id="evacuationForm">
                 <div class="form-group">
                     <label for="idNumber">תעודת זהות</label>
-                    <input type="text" id="idNumber" name="idNumber" placeholder="הכנס מספר תעודת זהות (5-9 ספרות)" maxlength="9" required>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <input type="text" id="idNumber" name="idNumber" placeholder="הכנס מספר תעודת זהות (5-9 ספרות)" maxlength="9" required>
+                        <label style="display: flex; align-items: center; gap: 5px; font-size: 1.1rem; font-weight: 500;">
+                            <input type="checkbox" id="isMissing" name="isMissing">
+                            נעדר
+                        </label>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -230,6 +236,31 @@
                 <div class="form-group">
                     <label for="floor">קומה</label>
                     <input type="text" id="floor" name="floor" placeholder="מספר קומה">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="residents">מספר נפשות בדירה</label>
+                        <input type="number" id="residents" name="residents" min="1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="familyMissing">בן משפחה נעדר?</label>
+                        <select id="familyMissing" name="familyMissing" class="form-control">
+                            <option value="false">לא</option>
+                            <option value="true">כן</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="clothing">תיאור לבוש/מזהה</label>
+                    <input type="text" id="clothing" name="clothing" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="additionalFamily">בני משפחה נוספים שלא נכחו</label>
+                    <input type="text" id="additionalFamily" name="additionalFamily" class="form-control">
                 </div>
 
                 <div class="phone-section">
@@ -263,8 +294,8 @@
 
     <div class="watermark">🤖 MADE WITH CODE-CAL</div>
 
-    <script type="module">
-        import { appendToSheet, getRecordById } from './googleSheetsService.js';
+    <script>
+        const { appendToSheet, getRecordById } = require('./googleSheetsService.js');
         
         // Make functions available globally for form submission
         window.appendToSheet = appendToSheet;
@@ -284,11 +315,16 @@
             // Collect form data
                 const formData = {
                     idNumber: document.getElementById('idNumber').value,
+                    isMissing: document.getElementById('isMissing').checked,
                     name: document.getElementById('name').value,
                     street: document.getElementById('street').value,
                     houseNumber: document.getElementById('houseNumber').value,
                     apartmentNumber: document.getElementById('apartmentNumber').value,
                     floor: document.getElementById('floor').value,
+                    residents: document.getElementById('residents').value,
+                    familyMissing: document.getElementById('familyMissing').value === 'true',
+                    clothing: document.getElementById('clothing').value,
+                    additionalFamily: document.getElementById('additionalFamily').value,
                     mobilePhone: document.getElementById('mobilePhone').value,
                     emergencyPhone: document.getElementById('emergencyPhone').value,
                     homePhone: document.getElementById('homePhone').value,
