@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>טופס פרטי תושבים באירוع חירום</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .form-section {
+            margin-bottom: 35px;
+            padding: 25px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 15px;
+            border-right: 4px solid #667eea;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .form-section h2 {
+            color: #2c3e50;
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .form-group.full-width {
+            flex: 100%;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+            font-size: 0.95em;
+        }
+
+        input[type="text"], input[type="tel"], input[type="number"], textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.9);
+        }
+
+        input[type="text"]:focus, input[type="tel"]:focus, input[type="number"]:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .radio-group, .checkbox-group {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .radio-item, .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        input[type="radio"], input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #667eea;
+        }
+
+        .children-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .children-table th, .children-table td {
+            padding: 12px;
+            text-align: right;
+            border-bottom: 1px solid #eee;
+        }
+
+        .children-table th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        .children-table input {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .health-section {
+            background: linear-gradient(45deg, #f8f9ff, #ffffff);
+        }
+
+        .submit-section {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .radio-group, .checkbox-group {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>טופס פרטי תושבים באירוע חירום</h1>
+        </div>
+
+        <form id="emergencyForm">
+            <!-- פרטים אישיים -->
+            <div class="form-section">
+                <h2>פרטים אישיים</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="lastName">שם משפחה *</label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstName">שם פרטי *</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">טלפון נייד *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="idNumber">תעודת זהות *</label>
+                        <input type="text" id="idNumber" name="idNumber" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>מגדר *</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="male" name="gender" value="male" required>
+                            <label for="male">זכר</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="female" name="gender" value="female" required>
+                            <label for="female">נקבה</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- כתובת -->
+            <div class="form-section">
+                <h2>כתובת מגורים</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="street">רחוב *</label>
+                        <input type="text" id="street" name="street" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="houseNumber">מספר בית *</label>
+                        <input type="text" id="houseNumber" name="houseNumber" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="apartment">דירה</label>
+                        <input type="text" id="apartment" name="apartment">
+                    </div>
+                    <div class="form-group">
+                        <label for="floor">קומה</label>
+                        <input type="text" id="floor" name="floor">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="residents">מספר הנפשות המתגוררות בדירה *</label>
+                    <input type="number" id="residents" name="residents" min="1" required>
+                </div>
+            </div>
+
+            <!-- מידע על בני משפחה -->
+            <div class="form-section">
+                <h2>מידע על בני משפחה</h2>
+                
+                <div class="form-group">
+                    <label>האם יש בן משפחה/קרוב שנעדר כתוצאה מהאירוע?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="missingNo" name="missing" value="no" onchange="toggleMissingDetails()">
+                            <label for="missingNo">לא</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="missingYes" name="missing" value="yes" onchange="toggleMissingDetails()">
+                            <label for="missingYes">כן</label>
+                        </div>
+                    </div>
+                    <div id="missingDetails" style="display: none; margin-top: 15px;">
+                        <label for="missingDescription">פרט:</label>
+                        <textarea id="missingDescription" name="missingDescription" rows="3"></textarea>
+                        <label for="appearance" style="margin-top: 15px;">תאר פרטי לבוש או סימנים מזהים:</label>
+                        <textarea id="appearance" name="appearance" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>האם יש בני משפחה נוספים שגרים בבית ולא נכחו בבית בזמן הפגיעה?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="absentNo" name="absent" value="no" onchange="toggleAbsentDetails()">
+                            <label for="absentNo">לא</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="absentYes" name="absent" value="yes" onchange="toggleAbsentDetails()">
+                            <label for="absentYes">כן</label>
+                        </div>
+                    </div>
+                    <div id="absentDetails" style="display: none; margin-top: 15px;">
+                        <label for="absentDescription">פרט:</label>
+                        <textarea id="absentDescription" name="absentDescription" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>האם מתגורר בבית אדם מבוגר מעל גיל 60?</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="elderly60Yes" name="elderly60" value="yes">
+                                <label for="elderly60Yes">כן</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="elderly60No" name="elderly60" value="no">
+                                <label for="elderly60No">לא</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>האם מתגוררים בבית ילדים עד גיל 18?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="childrenYes" name="children" value="yes" onchange="toggleChildrenDetails()">
+                            <label for="childrenYes">כן</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="childrenNo" name="children" value="no" onchange="toggleChildrenDetails()">
+                            <label for="childrenNo">לא</label>
+                        </div>
+                    </div>
+                    
+                    <div id="childrenDetails" style="display: none; margin-top: 20px;">
+                        <label for="childrenCount">מספר ילדים:</label>
+                        <input type="number" id="childrenCount" name="childrenCount" min="0" max="20">
+                        
+                        <h3 style="margin: 20px 0 15px 0; color: #2c3e50;">פרטי הילדים:</h3>
+                        <table class="children-table">
+                            <thead>
+                                <tr>
+                                    <th>שם הילד/ה</th>
+                                    <th>גיל</th>
+                                    <th>שם המוסד החינוכי</th>
+                                    <th>הערות</th>
+                                </tr>
+                            </thead>
+                            <tbody id="childrenTableBody">
+                                <tr>
+                                    <td><input type="text" name="childName1"></td>
+                                    <td><input type="number" name="childAge1" min="0" max="18"></td>
+                                    <td><input type="text" name="childSchool1"></td>
+                                    <td><input type="text" name="childNotes1"></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" name="childName2"></td>
+                                    <td><input type="number" name="childAge2" min="0" max="18"></td>
+                                    <td><input type="text" name="childSchool2"></td>
+                                    <td><input type="text" name="childNotes2"></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" name="childName3"></td>
+                                    <td><input type="number" name="childAge3" min="0" max="18"></td>
+                                    <td><input type="text" name="childSchool3"></td>
+                                    <td><input type="text" name="childNotes3"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- בעלי חיים וביטוח -->
+            <div class="form-section">
+                <h2>מידע נוסף</h2>
+                
+                <div class="form-group">
+                    <label>האם ברשותך בעלי חיים?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="petsYes" name="pets" value="yes" onchange="togglePetDetails()">
+                            <label for="petsYes">כן</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="petsNo" name="pets" value="no" onchange="togglePetDetails()">
+                            <label for="petsNo">לא</label>
+                        </div>
+                    </div>
+                    <div id="petDetails" style="display: none; margin-top: 15px;">
+                        <label for="petDescription">פרט:</label>
+                        <textarea id="petDescription" name="petDescription" rows="2"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>קופת חולים:</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="kupat" name="healthFund" value="kupat">
+                            <label for="kupat">קופ"ח</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="clalit" name="healthFund" value="clalit">
+                            <label for="clalit">כללית</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="maccabi" name="healthFund" value="maccabi">
+                            <label for="maccabi">מכבי</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="leumit" name="healthFund" value="leumit">
+                            <label for="leumit">לאומית</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="meuhedet" name="healthFund" value="meuhedet">
+                            <label for="meuhedet">מאוחדת</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- מידע רפואי -->
+            <div class="form-section health-section">
+                <h2>מידע רפואי</h2>
+                
+                <div class="form-group">
+                    <label>האם קיימת מגבלה פיזית או אחרת למישהו מבני המשפחה?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="disabilityYes" name="disability" value="yes" onchange="toggleDisabilityDetails()">
+                            <label for="disabilityYes">כן</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="disabilityNo" name="disability" value="no" onchange="toggleDisabilityDetails()">
+                            <label for="disabilityNo">לא</label>
+                        </div>
+                    </div>
+                    <div id="disabilityDetails" style="display: none; margin-top: 15px;">
+                        <label for="disabilityDescription">פרט:</label>
+                        <textarea id="disabilityDescription" name="disabilityDescription" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>האם נעשה שימוש בתרופות?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="medicationYes" name="medication" value="yes" onchange="toggleMedicationDetails()">
+                            <label for="medicationYes">כן</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="medicationNo" name="medication" value="no" onchange="toggleMedicationDetails()">
+                            <label for="medicationNo">לא</label>
+                        </div>
+                    </div>
+                    <div id="medicationDetails" style="display: none; margin-top: 15px;">
+                        <label for="medicationDescription">פרט:</label>
+                        <textarea id="medicationDescription" name="medicationDescription" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- דיור חלופי -->
+            <div class="form-section">
+                <h2>דיור חלופי</h2>
+                <div class="form-group">
+                    <label>האם יש לך ולבני המשפחה מקום דיור חלופי או שנדרש סיוע?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="housingYes" name="housing" value="available">
+                            <label for="housingYes">יש לנו מקום להתפנות אליו / דיור חלופי</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="housingNo" name="housing" value="needed">
+                            <label for="housingNo">נדרש סיוע</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="submit-section">
+                <button type="submit" class="submit-btn">שלח טופס</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function toggleMissingDetails() {
+            const missingDetails = document.getElementById('missingDetails');
+            const missingYes = document.getElementById('missingYes');
+            missingDetails.style.display = missingYes.checked ? 'block' : 'none';
+        }
+
+        function toggleAbsentDetails() {
+            const absentDetails = document.getElementById('absentDetails');
+            const absentYes = document.getElementById('absentYes');
+            absentDetails.style.display = absentYes.checked ? 'block' : 'none';
+        }
+
+        function toggleChildrenDetails() {
+            const childrenDetails = document.getElementById('childrenDetails');
+            const childrenYes = document.getElementById('childrenYes');
+            childrenDetails.style.display = childrenYes.checked ? 'block' : 'none';
+        }
+
+        function togglePetDetails() {
+            const petDetails = document.getElementById('petDetails');
+            const petsYes = document.getElementById('petsYes');
+            petDetails.style.display = petsYes.checked ? 'block' : 'none';
+        }
+
+        function toggleDisabilityDetails() {
+            const disabilityDetails = document.getElementById('disabilityDetails');
+            const disabilityYes = document.getElementById('disabilityYes');
+            disabilityDetails.style.display = disabilityYes.checked ? 'block' : 'none';
+        }
+
+        function toggleMedicationDetails() {
+            const medicationDetails = document.getElementById('medicationDetails');
+            const medicationYes = document.getElementById('medicationYes');
+            medicationDetails.style.display = medicationYes.checked ? 'block' : 'none';
+        }
+
+        document.getElementById('emergencyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect form data
+            const formData = new FormData(this);
+            const data = {};
+            
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            
+            // Here you would typically send the data to a server
+            console.log('Form data:', data);
+            alert('הטופס נשלח בהצלחה! הנתונים נשמרו במערכת.');
+        });
+
+        // Add smooth animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.form-section');
+            sections.forEach((section, index) => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    section.style.transition = 'all 0.6s ease';
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>
